@@ -28,7 +28,15 @@ function App() {
 
   return (
     <>
-    <h1> hello there</h1>
+    <h1> Agriculture Tracking</h1>
+    <table>
+      <tr>
+        <td>Crop Type</td>
+        <td>Date of Planting</td>
+        <td>Time to Expire</td>
+        <td>Date of Expiration</td>
+      </tr>
+    </table>
     </>
   )
 }
