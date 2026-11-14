@@ -50,6 +50,13 @@ function App() {
     a.download = "Crop.csv"
     a.click()
   }
+//This function grabs the current date
+  function grabDate() {
+    const d = new Date();
+    let l = d.getFullYear() + "/" + d.getDate() + "/" + d.getMonth();
+    console.log(l)
+    return l
+  }
 
   /* the return creates the design and main page displayed for the user*/ 
   return (
@@ -59,6 +66,7 @@ function App() {
     <button onClick={displayData} type="button"> Display Data</button>
     <button onClick={addData} type="button">Add Data</button>
     <button onClick={saveData} type="button">Save Data</button>
+    <button onClick={grabDate} type="button">Grab Current Date</button>
     <table>
       <tr>
         <td>Crop Type</td>
