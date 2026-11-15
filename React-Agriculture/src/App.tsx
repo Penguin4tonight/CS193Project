@@ -1,13 +1,11 @@
 import { useState } from 'react'
-import { useEffect } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import Papa from "papaparse";
+import { differenceInDays} from "date-fns";
 
 
 import './App.css'
 //npm install papaparse
+//npm install "date-fns"
 
 
 function App() {
@@ -55,7 +53,30 @@ function App() {
     const d = new Date();
     let l = d.getFullYear() + "/" + d.getDate() + "/" + d.getMonth();
     console.log(l)
-    return l
+    console.log(d)
+    return d
+  }
+
+//This function gets all of the remaining lifespans of the crops in cropdata
+  function remainingTime() {
+    let remainingLife = []
+    for (const crop of cropdata) {
+      let begin_date = crop["begin_date"]
+      let lifespan = Number(crop["lifespan"])
+      let bg_date = begin_date.split("/");
+      let year = Number(bg_date[0])
+      let month = Number(bg_date[1])
+      let day = Number(bg_date[2])
+      let start_date = new Date(year,month,day)
+      console.log(start_date)
+      let day_difference = differenceInDays(grabDate(),start_date)
+      let remaining_life = lifespan - day_difference
+      remainingLife.push(remaining_life)
+      console.log(remaining_life)
+    }
+    console.log(remainingLife)
+    return remainingLife
+
   }
 
   /* the return creates the design and main page displayed for the user*/ 
@@ -67,6 +88,7 @@ function App() {
     <button onClick={addData} type="button">Add Data</button>
     <button onClick={saveData} type="button">Save Data</button>
     <button onClick={grabDate} type="button">Grab Current Date</button>
+    <button onClick={remainingTime} type="button"> Get Remaining Time </button>
     <table>
       <tr>
         <td>Crop Type</td>

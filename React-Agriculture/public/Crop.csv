@@ -1,3 +1,4 @@
-,,,,,,
-Crop Type,Date of Planting,Time for Expiration,Date of Expiration,,,
-Corn,6/13/2007,21,8/13/2007,,,
+Crop Type,begin_date,lifespan,last_date,,,
+Corn,2007/6/13,21,2007/8/13,,,
+Wheat,2026/9/27,100,2027/9/10,,,
+Pumpkin,2026/9/8,111,2027/9/18,,,
