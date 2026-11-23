@@ -1,4 +1,4 @@
-Crop Type,begin_date,lifespan,last_date,,,
-Corn,2007/6/13,21,2007/8/13,,,
-Wheat,2026/9/27,100,2027/9/10,,,
-Pumpkin,2026/9/8,111,2027/9/18,,,
+Crop_type,begin_date,lifespan,last_date,Germination,Vegetative_Growth,Reproductive_Growth,Fruit_Development,Maturity,
+Corn,2007/6/13,21,2007/8/13,,,,,,
+Wheat,2026/9/27,100,2027/9/10,10,20,40,80,85,
+Pumpkin,2026/9/8,111,2027/9/18,5,15,30,75,100,
