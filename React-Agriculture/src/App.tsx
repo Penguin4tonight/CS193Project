@@ -27,24 +27,11 @@ function App() {
   function displayData() {
     console.log(cropdata);
   }
-//This tests the ability to add data to the Crop.csv and see if it actually works
-  function addData() {
-    let crop = {
-      Crop_type:"Sweet Potato",
-      begin_date:"2026/5/15",
-      lifespan:"20",
-      Germination: "1",
-      Vegetative_Growth: "3",
-      Reproductive_Growth: "4",
-      Fruit_Development: "7",
-      Maturity: "15",
-    };
-    setcropdata([...cropdata, crop])
-  }
-//This function provides the csv as a download
+
+  //This function provides the csv as a download
   function saveData(){
     const newdata = Papa.unparse(cropdata)
-    const b = new Blob([newdata], {type: "text/csv;charset=utg-8"});
+    const b = new Blob([newdata], {type: "text/csv"});
     const u = URL.createObjectURL(b);
     const a = document.createElement("a");
     a.href = u
@@ -54,8 +41,6 @@ function App() {
 //This function grabs the current date
   function grabDate() {
     const d = new Date();
-    //let l = d.getFullYear() + "/" + d.getDate() + "/" + d.getMonth();
-    //console.log(l)
     console.log(d)
     return d
   }
@@ -124,6 +109,7 @@ function App() {
     return stage
   }
 
+  // This function adds the data so that when you download the csv it has the new crop
   function handleSubmit(formData: FormData) {
     let crop = {
       Crop_type:String(formData.get("crop_type")),
@@ -143,12 +129,7 @@ function App() {
     <>
     <h1> Agriculture Tracking</h1>
     <button onClick={grabData} type="button">Grab Data</button>
-    {/*<button onClick={displayData} type="button"> Display Data</button>*/}
-    {/*<button onClick={addData} type="button">Add Data</button>*/}
     <button onClick={saveData} type="button">Save Data</button>
-    {/*<button onClick={grabDate} type="button">Grab Current Date</button>*/}
-    {/*<button onClick={remainingTime} type="button"> Get Remaining Time </button>*/}
-    {/*<button onClick={getStages} type="button">Get Stages</button>*/}
     <form action={handleSubmit}>
       <input placeholder="Crop_type_here" name="crop_type"></input>
       <input placeholder="Begin_date_here" name="begin_date"></input>
