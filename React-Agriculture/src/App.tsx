@@ -20,7 +20,7 @@ function App() {
       complete: (result) => {
         setcropdata(result.data)
       }
-    })
+    });
   }
 
   //This function displays data to the console
@@ -30,40 +30,40 @@ function App() {
 
   //This function provides the csv as a download
   function saveData(){
-    const newdata = Papa.unparse(cropdata)
+    const newdata = Papa.unparse(cropdata);
     const b = new Blob([newdata], {type: "text/csv"});
     const u = URL.createObjectURL(b);
     const a = document.createElement("a");
-    a.href = u
-    a.download = "Crop.csv"
-    a.click()
+    a.href = u;
+    a.download = "Crop.csv";
+    a.click();
   }
 //This function grabs the current date
   function grabDate() {
     const d = new Date();
-    console.log(d)
-    return d
+    console.log(d);
+    return d;
   }
 
 //This function gets all of the remaining lifespans of the crops in cropdata
   function remainingTime() {
     let remainingLife = []
     for (const crop of cropdata) {
-      let begin_date = crop["begin_date"]
-      let lifespan = Number(crop["lifespan"])
+      let begin_date = crop["begin_date"];
+      let lifespan = Number(crop["lifespan"]);
       let bg_date = begin_date.split("/");
-      let year = Number(bg_date[0])
-      let month = Number(bg_date[1])-1
-      let day = Number(bg_date[2])
-      let start_date = new Date(year,month,day)
-      console.log(start_date)
-      let day_difference = differenceInDays(grabDate(),start_date)
-      let remaining_life = lifespan - day_difference
-      remainingLife.push(remaining_life)
-      console.log(remaining_life)
+      let year = Number(bg_date[0]);
+      let month = Number(bg_date[1])-1;
+      let day = Number(bg_date[2]);
+      let start_date = new Date(year,month,day);
+      console.log(start_date);
+      let day_difference = differenceInDays(grabDate(),start_date);
+      let remaining_life = lifespan - day_difference;
+      remainingLife.push(remaining_life);
+      console.log(remaining_life);
     }
-    console.log(remainingLife)
-    return remainingLife
+    console.log(remainingLife);
+    return remainingLife;
 
   }
 
@@ -72,41 +72,41 @@ function App() {
     let stage = []
     for(const crop of cropdata) {
       let begin_date = crop["begin_date"];
-      let lifespan = Number(crop["lifespan"])
-      let bg_date = begin_date.split("/")
-      let year = Number(bg_date[0])
-      let month = Number(bg_date[1])-1 //Do -1 because the Date constructor uses zero indexing: 0-11
-      let day = Number(bg_date[2])
-      let start_date = new Date(year,month,day)
+      let lifespan = Number(crop["lifespan"]);
+      let bg_date = begin_date.split("/");
+      let year = Number(bg_date[0]);
+      let month = Number(bg_date[1])-1; //Do -1 because the Date constructor uses zero indexing: 0-11
+      let day = Number(bg_date[2]);
+      let start_date = new Date(year,month,day);
       let Germination_time = Number(crop["Germination"]);
-      let Vegetative_time = Number(crop["Vegetative_Growth"])
-      let Fruit_time = Number(crop["Fruit_Development"])
-      let Maturity_time = Number(crop["Maturity"])
-      let day_difference = differenceInDays(grabDate(), start_date)
-      console.log("The following number is for " + crop["Crop_type"])
-      console.log(day_difference)
+      let Vegetative_time = Number(crop["Vegetative_Growth"]);
+      let Fruit_time = Number(crop["Fruit_Development"]);
+      let Maturity_time = Number(crop["Maturity"]);
+      let day_difference = differenceInDays(grabDate(), start_date);
+      console.log("The following number is for " + crop["Crop_type"]);
+      console.log(day_difference);
       if(day_difference > lifespan ) {
-        stage.push("Expired")
+        stage.push("Expired");
       }
       else if(day_difference > Maturity_time) {
-        stage.push("Mature")
+        stage.push("Mature");
       }
       else if(day_difference > Fruit_time) {
-        stage.push("Fruiting")
+        stage.push("Fruiting");
       }
       else if (day_difference > Vegetative_time) {
-        stage.push("Vegetative_Growth")
+        stage.push("Vegetative_Growth");
       }
       else if(day_difference > Germination_time) {
-        stage.push("Germinating")
+        stage.push("Germinating");
       }
       else{
-        stage.push("Still a seed")
+        stage.push("Still a seed");
       }
 
     }
-    console.log(stage)
-    return stage
+    console.log(stage);
+    return stage;
   }
 
   // This function adds the data so that when you download the csv it has the new crop
@@ -121,7 +121,7 @@ function App() {
       Fruit_Development: String(formData.get("Fruit_Development")),
       Maturity: String(formData.get("Maturity")),
     };
-    setcropdata([...cropdata, crop])
+    setcropdata([...cropdata, crop]);
   }
 
   /* the return creates the design and main page displayed for the user*/ 
