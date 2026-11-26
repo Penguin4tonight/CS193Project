@@ -10,12 +10,11 @@ import './App.css'
 
 function App() {
   //Way to store and alter the cropdata for use in the project
-  const [cropdata, setcropdata] = useState<{Crop_type: string; begin_date: string; lifespan: string; last_date: string; Germination: string; Vegetative_Growth: string; Fruit_Development: string; Maturity: string}[]>([]);
-
-
+  const [cropdata, setcropdata] = useState<{Crop_type: string; begin_date: string; lifespan: string; Germination: string; Vegetative_Growth: string; Reproductive_Growth: String; Fruit_Development: string; Maturity: string}[]>([]);
+  
   //This Function provides the data from the csv file. 
   function grabData() {
-    Papa.parse<{Crop_type: string; begin_date: string; lifespan: string; last_date: string; Germination: string; Vegetative_Growth: string; Fruit_Development: string; Maturity: string}>("/Crop.csv", {
+    Papa.parse<{Crop_type: string; begin_date: string; lifespan: string; Germination: string; Vegetative_Growth: string; Reproductive_Growth: String; Fruit_Development: string; Maturity: string}>("/Crop.csv", {
       download: true,
       header: true,
       complete: (result) => {
@@ -24,19 +23,19 @@ function App() {
     })
   }
 
-  //This function displays data
+  //This function displays data to the console
   function displayData() {
     console.log(cropdata);
   }
-//This function adds the data to the current cropdata
+//This tests the ability to add data to the Crop.csv and see if it actually works
   function addData() {
     let crop = {
       Crop_type:"Sweet Potato",
       begin_date:"2026/5/15",
       lifespan:"20",
-      last_date:"2026/10/20",
       Germination: "1",
       Vegetative_Growth: "3",
+      Reproductive_Growth: "4",
       Fruit_Development: "7",
       Maturity: "15",
     };
@@ -69,7 +68,7 @@ function App() {
       let lifespan = Number(crop["lifespan"])
       let bg_date = begin_date.split("/");
       let year = Number(bg_date[0])
-      let month = Number(bg_date[1])
+      let month = Number(bg_date[1])-1
       let day = Number(bg_date[2])
       let start_date = new Date(year,month,day)
       console.log(start_date)
@@ -91,7 +90,7 @@ function App() {
       let lifespan = Number(crop["lifespan"])
       let bg_date = begin_date.split("/")
       let year = Number(bg_date[0])
-      let month = Number(bg_date[1])
+      let month = Number(bg_date[1])-1 //Do -1 because the Date constructor uses zero indexing: 0-11
       let day = Number(bg_date[2])
       let start_date = new Date(year,month,day)
       let Germination_time = Number(crop["Germination"]);
@@ -99,11 +98,13 @@ function App() {
       let Fruit_time = Number(crop["Fruit_Development"])
       let Maturity_time = Number(crop["Maturity"])
       let day_difference = differenceInDays(grabDate(), start_date)
+      console.log("The following number is for " + crop["Crop_type"])
+      console.log(day_difference)
       if(day_difference > lifespan ) {
         stage.push("Expired")
       }
       else if(day_difference > Maturity_time) {
-        stage.push("Germination")
+        stage.push("Mature")
       }
       else if(day_difference > Fruit_time) {
         stage.push("Fruiting")
@@ -123,25 +124,50 @@ function App() {
     return stage
   }
 
+  function handleSubmit(formData: FormData) {
+    let crop = {
+      Crop_type:String(formData.get("crop_type")),
+      begin_date:String(formData.get("begin_date")),
+      lifespan:String(formData.get("life_span")),
+      Germination: String(formData.get("Germination")),
+      Vegetative_Growth: String(formData.get("Vegetative_Growth")),
+      Reproductive_Growth: String(formData.get("Reproductive_Growth")),
+      Fruit_Development: String(formData.get("Fruit_Development")),
+      Maturity: String(formData.get("Maturity")),
+    };
+    setcropdata([...cropdata, crop])
+  }
+
   /* the return creates the design and main page displayed for the user*/ 
   return (
     <>
     <h1> Agriculture Tracking</h1>
     <button onClick={grabData} type="button">Grab Data</button>
-    <button onClick={displayData} type="button"> Display Data</button>
-    <button onClick={addData} type="button">Add Data</button>
+    {/*<button onClick={displayData} type="button"> Display Data</button>*/}
+    {/*<button onClick={addData} type="button">Add Data</button>*/}
     <button onClick={saveData} type="button">Save Data</button>
-    <button onClick={grabDate} type="button">Grab Current Date</button>
-    <button onClick={remainingTime} type="button"> Get Remaining Time </button>
-    <button onClick={getStages} type="button">Get Stages</button>
+    {/*<button onClick={grabDate} type="button">Grab Current Date</button>*/}
+    {/*<button onClick={remainingTime} type="button"> Get Remaining Time </button>*/}
+    {/*<button onClick={getStages} type="button">Get Stages</button>*/}
+    <form action={handleSubmit}>
+      <input placeholder="Crop_type_here" name="crop_type"></input>
+      <input placeholder="Begin_date_here" name="begin_date"></input>
+      <input placeholder="Life_span_here" name="life_span"></input>
+      <input placeholder="Germination_span_here" name="Germination"></input>
+      <input placeholder="Vegetative_Growth_here" name="Vegetative_Growth"></input>
+      <input placeholder="Reproductive_Growth_here" name="Reproductive_Growth"></input>
+      <input placeholder="Fruit_Development_here" name="Fruit_Development"></input>
+      <input placeholder="Maturity_here" name="Maturity"></input>
+      <button className="submitbutton"> Add Data</button>
+    </form>
     <table>
       <thead>
         <tr>
           <td>Crop Type</td>
           <td>Date of Planting</td>
           <td>Time to Expire</td>
-          <td>Date of Expiration</td>
           <td>Current Stage</td>
+          <td>Remaining Time</td>
         </tr>
       </thead>
       <tbody>
@@ -150,8 +176,8 @@ function App() {
             <td>{crop.Crop_type}</td>
             <td>{crop.begin_date}</td>
             <td>{crop.lifespan}</td>
-            <td>{crop.last_date}</td>
             <td>{getStages()[index]}</td>
+            <td>{remainingTime()[index]}</td>
           </tr>
         ))}
       </tbody>
