@@ -109,6 +109,48 @@ function App() {
     return stage;
   }
 
+    //This function takes the current date and the stages of the crops to find their current color
+  function getColors() {
+    let color = []
+    for(const crop of cropdata) {
+      let begin_date = crop["begin_date"];
+      let lifespan = Number(crop["lifespan"]);
+      let bg_date = begin_date.split("/");
+      let year = Number(bg_date[0]);
+      let month = Number(bg_date[1])-1; //Do -1 because the Date constructor uses zero indexing: 0-11
+      let day = Number(bg_date[2]);
+      let start_date = new Date(year,month,day);
+      let Germination_time = Number(crop["Germination"]);
+      let Vegetative_time = Number(crop["Vegetative_Growth"]);
+      let Fruit_time = Number(crop["Fruit_Development"]);
+      let Maturity_time = Number(crop["Maturity"]);
+      let day_difference = differenceInDays(grabDate(), start_date);
+      console.log("The following number is for " + crop["Crop_type"]);
+      console.log(day_difference);
+      if(day_difference > lifespan ) {
+        color.push({color:"red"});
+      }
+      else if(day_difference > Maturity_time) {
+        color.push({color:"brown"});
+      }
+      else if(day_difference > Fruit_time) {
+        color.push({color:"orange"});
+      }
+      else if (day_difference > Vegetative_time) {
+        color.push({color:"green"});
+      }
+      else if(day_difference > Germination_time) {
+        color.push({color:"blue"});
+      }
+      else{
+        color.push({color:"purple"});
+      }
+
+    }
+    console.log(color);
+    return color;
+  }
+
   // This function adds the data so that when you download the csv it has the new crop
   function handleSubmit(formData: FormData) {
     let crop = {
@@ -153,7 +195,7 @@ function App() {
       </thead>
       <tbody>
         {cropdata.map((crop, index) => (
-          <tr key = {crop.Crop_type}>
+          <tr key = {crop.Crop_type} style={getColors()[index]}>
             <td>{crop.Crop_type}</td>
             <td>{crop.begin_date}</td>
             <td>{crop.lifespan}</td>
